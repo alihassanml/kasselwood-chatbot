@@ -48,11 +48,11 @@ const Chatbot = () => {
   const userName = (sessionStorage.getItem("chat_name") || "Guest").charAt(0).toUpperCase() + (sessionStorage.getItem("chat_name") || "Guest").slice(1);
 
   const helpOptions = [
-    "How much does a kitchen/bathroom renovation typically cost ?",
-    "How long will my renovation project take ?",
-    "Do you handle permits and inspections ?",
-    "Are you licensed and insured ?",
-    "What makes you different from other contractors ?"
+    "How much does a kitchen renovation cost in Montreal?",
+    "What's included in your free consultation?",
+    "How long does a bathroom renovation take?",
+    "Do you handle permits and inspections?",
+    "Can I see examples of your recent projects?"
   ];
 
   useEffect(() => {
