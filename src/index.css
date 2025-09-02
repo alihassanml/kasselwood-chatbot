@@ -229,12 +229,12 @@
 
 /* HTML: <div class="curved-rectangle"></div> */
 .curved-rectangle {
-  --c: 85; 
-  
-  width: 100%;
-  aspect-ratio: 1.6 /1;
-  mask: radial-gradient(calc(var(--c)*1%) 100% at 200% calc(-100%*cos(asin(50/var(--c)))),#0000 calc(100% - 1px),#000);
-  clip-path: ellipse(calc(var(--c)*1%) 100% at top);
+    --c: 85; 
+    
+    width: 100%;
+    aspect-ratio: 1.8 /1;
+    mask: radial-gradient(calc(var(--c)*1%) 100% at 200% calc(-100%*cos(asin(50/var(--c)))),#0000 calc(100% - 1px),#000);
+    clip-path: ellipse(calc(var(--c)*1%) 100% at top);
 
 } 
 .form-control:focus {
