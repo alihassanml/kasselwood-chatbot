@@ -3,7 +3,7 @@ version: '3.9'
 services:
   frontend:
     build: .
-    container_name: adam-chatbot
+    container_name: kasselwood-chatbot
     ports:
-      - "5176:80"
+      - "5179:80"
     restart: always
