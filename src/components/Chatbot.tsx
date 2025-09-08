@@ -174,7 +174,7 @@ const Chatbot = () => {
             zIndex: 10000,
           }}
         >
-          <Card style={{ width: '400px', height: '640px', display: 'flex', flexDirection: 'column', borderRadius: "30px", overflow: "hidden" }}>
+          <Card style={{ width: '390px', height: '610px', display: 'flex', flexDirection: 'column', borderRadius: "30px", overflow: "hidden" }}>
 
             {/* Modern Header */}
 
