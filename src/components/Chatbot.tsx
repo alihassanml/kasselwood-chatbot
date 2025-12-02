@@ -14,7 +14,7 @@ type Message = {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [screen, setScreen] = useState<'intro' | 'chat'>('intro');
+  const [screen, setScreen] = useState<'chat' | 'intro'>('chat');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [input, setInput] = useState('');
@@ -55,17 +55,30 @@ const Chatbot = () => {
     "Can I see examples of your recent projects?"
   ];
 
-  useEffect(() => {
-    if (isOpen) {
-      const nameStored = sessionStorage.getItem("chat_name");
-      const emailStored = sessionStorage.getItem("chat_email");
-      if (nameStored && emailStored) {
-        setScreen("chat");
-      } else {
-        setScreen("intro");
-      }
+useEffect(() => {
+  if (isOpen) {
+    const visited = sessionStorage.getItem("visited_chatbot");
+
+    if (!visited) {
+      setScreen("intro");
+      sessionStorage.setItem("visited_chatbot", "true");
+    } else {
+      setScreen("chat");
     }
-  }, [isOpen]);
+  }
+}, [isOpen]);
+
+
+useEffect(() => {
+  const greeted = sessionStorage.getItem("greeted_user");
+
+  if (screen === "chat" && !greeted) {
+    handleBotResponse("Hello! 👋 Welcome to Kasselwood Fabricators. How can I help you today?");
+    sessionStorage.setItem("greeted_user", "true");
+  }
+}, [screen]);
+
+
 
   const handleBotResponse = async (userMessage: string) => {
     setBotBusy(true);
@@ -178,7 +191,7 @@ const Chatbot = () => {
 
             {/* Modern Header */}
 
-            <div className={screen === 'intro'  ? 'curved-rectangle' : ''} style={{
+            <div className={screen === 'intro' ? '' : ''} style={{
               background: "linear-gradient(135deg, #000000ff, #7a7a7aff)",
               padding: '20px',
               paddingTop: "20px",
@@ -195,7 +208,7 @@ const Chatbot = () => {
                     height: "50px",
                     // borderRadius: "50%",
                     paddingTop: " 0px",
-                    marginTop:"20px",
+                    marginTop: "20px",
                     objectFit: "cover",
                     marginRight: "10px"
                   }}
@@ -205,7 +218,7 @@ const Chatbot = () => {
               </div>
               {screen === 'intro' && (
                 <>
-                  
+
                   <p style={{ margin: 0, fontSize: 15, paddingTop: '20px', paddingRight: '50px' }}>
                     👋 Hi, I’m the chatbot from <b>KASSELWOOD FABRICATORS</b>. How can I help you today?
                   </p>
@@ -358,7 +371,7 @@ const Chatbot = () => {
               )}
 
 
-              
+
 
             </Card.Body>
 
@@ -375,8 +388,8 @@ const Chatbot = () => {
               }}
             >
               {[
-                { icon: FaHome, label: 'Home', screenName: 'intro' },
-                { icon: FaEnvelope, label: 'Messages', screenName: 'chat' },
+                { icon: FaEnvelope, label: 'Chat', screenName: 'chat' },
+                { icon: FaHome, label: 'Home', screenName: 'intro' }
               ].map((item, idx) => {
                 const Icon = item.icon;
                 const isActive = screen === item.screenName;
