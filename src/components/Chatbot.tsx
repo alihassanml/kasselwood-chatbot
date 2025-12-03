@@ -269,54 +269,54 @@ const Chatbot = () => {
             <Card.Body style={{ overflowY: 'auto', flex: 1, padding: '10px' }}>
 
               {screen === "intro" && (
-  <div style={{ padding: "20px", maxWidth: "700px", margin: "auto" }}>
-    <h5 style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600", fontSize: "18px" }}>Frequently Asked Questions</h5>
-    {faqData.map((faq, index) => (
-      <div
-        key={index}
-        style={{
-          border: "1px solid #ecebeb",
-          borderRadius: "10px",
-          marginBottom: "12px",
-          overflow: "hidden",
-          boxShadow: openIndex === index ? "0 4px 12px rgba(0,0,0,0.1)" : "0 2px 6px rgba(0,0,0,0.05)",
-          transition: "box-shadow 0.3s ease",
-        }}
-      >
-        <button
-          onClick={() => toggleFAQ(index)}
-          style={{
-            width: "100%",
-            background: "#ffffff",
-            border: "none",
-            padding: "12px 20px",
-            textAlign: "left",
-            fontSize: "14px",
-            fontWeight: "500",
-            cursor: "pointer",
-            outline: "none",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          {faq.question}
-          <span style={{ transform: openIndex === index ? "rotate(45deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}>+</span>
-        </button>
-        <div
-          style={{
-            maxHeight: openIndex === index ? "500px" : "0",
-            transition: "max-height 0.4s ease, padding 0.4s ease",
-            padding: openIndex === index ? "10px 20px 15px" : "0 20px",
-            background: "#fafafa",
-          }}
-        >
-          <p style={{ margin: 0, fontSize: "13px", color: "#555" }}>{faq.answer}</p>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
+                <div style={{ padding: "20px", maxWidth: "700px", margin: "auto" }}>
+                  <h5 style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600", fontSize: "18px" }}>Frequently Asked Questions</h5>
+                  {faqData.map((faq, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        border: "1px solid #ecebeb",
+                        borderRadius: "10px",
+                        marginBottom: "12px",
+                        overflow: "hidden",
+                        boxShadow: openIndex === index ? "0 4px 12px rgba(0,0,0,0.1)" : "0 2px 6px rgba(0,0,0,0.05)",
+                        transition: "box-shadow 0.3s ease",
+                      }}
+                    >
+                      <button
+                        onClick={() => toggleFAQ(index)}
+                        style={{
+                          width: "100%",
+                          background: "#ffffff",
+                          border: "none",
+                          padding: "12px 20px",
+                          textAlign: "left",
+                          fontSize: "14px",
+                          fontWeight: "500",
+                          cursor: "pointer",
+                          outline: "none",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        {faq.question}
+                        <span style={{ transform: openIndex === index ? "rotate(45deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}>+</span>
+                      </button>
+                      <div
+                        style={{
+                          maxHeight: openIndex === index ? "500px" : "0",
+                          transition: "max-height 0.4s ease, padding 0.4s ease",
+                          padding: openIndex === index ? "10px 20px 15px" : "0 20px",
+                          background: "#fafafa",
+                        }}
+                      >
+                        <p style={{ margin: 0, fontSize: "13px", color: "#555" }}>{faq.answer}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
 
 
