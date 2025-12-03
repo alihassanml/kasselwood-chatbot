@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactMarkdown from 'react-markdown';
 import { motion } from "framer-motion";
 import { FaChevronRight } from 'react-icons/fa';
+import { Send, Home, MessageCircle, HelpCircle, Phone, Mail, Calendar, ChevronRight, Wrench } from 'lucide-react';
 
 type Message = {
   type: 'bot' | 'user';
@@ -47,36 +48,72 @@ const Chatbot = () => {
 
   const userName = (sessionStorage.getItem("chat_name") || "Guest").charAt(0).toUpperCase() + (sessionStorage.getItem("chat_name") || "Guest").slice(1);
 
-  const helpOptions = [
-    "How much does a kitchen renovation cost in Montreal?",
-    "What's included in your free consultation?",
-    "How long does a bathroom renovation take?",
-    "Do you handle permits and inspections?",
-    "Can I see examples of your recent projects?"
+  const faqData = [
+    {
+      question: "What services does KasselWood Fabricators provide?",
+      answer: "We provide residential and commercial renovations, including kitchens, bathrooms, basements, custom cabinetry, woodworking, and architectural millwork."
+    },
+    {
+      question: "Do you handle both design and construction phases of a project?",
+      answer: "Yes — we offer full-service solutions from the design and planning stage through material selection, construction, and finishing."
+    },
+    {
+      question: "Can you execute custom cabinetry and woodwork projects?",
+      answer: "Absolutely. We specialize in custom cabinets, wardrobes, vanities, and bespoke woodwork tailored to each client’s space and preferences."
+    },
+    {
+      question: "Do you offer services for both residential and commercial properties?",
+      answer: "Yes — we cater to both homes and commercial spaces such as offices, shops, restaurants with renovation and custom furniture solutions."
+    },
+    {
+      question: "Do you provide a free quote and initial consultation?",
+      answer: "Yes. We offer a free site visit and estimate to evaluate project needs and discuss budgets."
+    },
+    {
+      question: "How do you ensure the quality of workmanship and materials?",
+      answer: "We employ experienced craftspeople and use premium-quality materials to guarantee durable, high-quality results."
+    },
+    {
+      question: "Are you licensed and insured?",
+      answer: "Yes — we are fully licensed and insured to operate as a renovation contractor."
+    },
+    {
+      question: "Can you handle partial projects (e.g. only cabinetry) or do you require full renovation contracts?",
+      answer: "We can take on partial projects, such as cabinetry or specific rooms, as well as full-scale renovations."
+    },
+    {
+      question: "Do you provide custom design ideas and help with material selection?",
+      answer: "Yes — we collaborate with clients to design layouts, select materials, and plan finishes tailored to their style and budget."
+    },
+    {
+      question: "How long does a typical cabinetry or renovation project take?",
+      answer: "Project timelines vary depending on size and complexity; timelines will be provided after initial evaluation."
+    }
   ];
 
-useEffect(() => {
-  if (isOpen) {
-    const visited = sessionStorage.getItem("visited_chatbot");
 
-    if (!visited) {
-      setScreen("intro");
-      sessionStorage.setItem("visited_chatbot", "true");
-    } else {
-      setScreen("chat");
+  useEffect(() => {
+    if (isOpen) {
+      const visited = sessionStorage.getItem("visited_chatbot");
+
+      if (!visited) {
+        setScreen("intro");
+        sessionStorage.setItem("visited_chatbot", "true");
+      } else {
+        setScreen("chat");
+      }
     }
-  }
-}, [isOpen]);
+  }, [isOpen]);
 
 
-useEffect(() => {
-  const greeted = sessionStorage.getItem("greeted_user");
+  useEffect(() => {
+    const greeted = sessionStorage.getItem("greeted_user");
 
-  if (screen === "chat" && !greeted) {
-    handleBotResponse("Hello! 👋 Welcome to Kasselwood Fabricators. How can I help you today?");
-    sessionStorage.setItem("greeted_user", "true");
-  }
-}, [screen]);
+    if (screen === "chat" && !greeted) {
+      handleBotResponse("Hello! 👋 Welcome to Kasselwood Fabricators. How can I help you today?");
+      sessionStorage.setItem("greeted_user", "true");
+    }
+  }, [screen]);
 
 
 
@@ -148,9 +185,12 @@ useEffect(() => {
   };
 
   // Function to handle direct messaging without form
-  const [firstMessageSent, setFirstMessageSent] = useState(() => {
-    return sessionStorage.getItem("first_message_sent") === "true";
-  });
+  const [firstMessageSent, setFirstMessageSent] = useState(true);
+
+  useEffect(() => {
+    sessionStorage.setItem("first_message_sent", "true");
+  }, []);
+
 
   const handleDirectMessage = () => {
     setScreen("chat");
@@ -172,6 +212,13 @@ useEffect(() => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, typingMessage]);
+
+
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <>
@@ -216,82 +263,61 @@ useEffect(() => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
               </div>
-              {screen === 'intro' && (
-                <>
-
-                  <p style={{ margin: 0, fontSize: 15, paddingTop: '20px', paddingRight: '50px' }}>
-                    👋 Hi, I’m the chatbot from <b>KASSELWOOD FABRICATORS</b>. How can I help you today?
-                  </p>
-                </>
-              )}
-
-
-
-
             </div>
 
             {/* Main Body */}
             <Card.Body style={{ overflowY: 'auto', flex: 1, padding: '10px' }}>
 
-              {screen === 'intro' && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '15px' }}
-                >
-                  {/* Send a message card */}
-                  <div
-                    style={{
-                      background: 'white',
-                      borderRadius: '10px',
-                      padding: '15px',
-                      marginBottom: '12px',
-                      boxShadow: '0 2px 20px rgba(0, 0, 0, 0.1)',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => handleHelpClick("Send us a message")}
-                  >
-                    <div>
-                      <strong style={{ fontSize: '15px', color: '#000' }}>Send us a message</strong>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>We typically reply within an hour</p>
-                    </div>
-                    <FaChevronRight color="#000000ff" size={16} />
-                  </div>
+              {screen === "intro" && (
+  <div style={{ padding: "20px", maxWidth: "700px", margin: "auto" }}>
+    <h5 style={{ textAlign: "center", marginBottom: "20px", fontWeight: "600", fontSize: "18px" }}>Frequently Asked Questions</h5>
+    {faqData.map((faq, index) => (
+      <div
+        key={index}
+        style={{
+          border: "1px solid #ecebeb",
+          borderRadius: "10px",
+          marginBottom: "12px",
+          overflow: "hidden",
+          boxShadow: openIndex === index ? "0 4px 12px rgba(0,0,0,0.1)" : "0 2px 6px rgba(0,0,0,0.05)",
+          transition: "box-shadow 0.3s ease",
+        }}
+      >
+        <button
+          onClick={() => toggleFAQ(index)}
+          style={{
+            width: "100%",
+            background: "#ffffff",
+            border: "none",
+            padding: "12px 20px",
+            textAlign: "left",
+            fontSize: "14px",
+            fontWeight: "500",
+            cursor: "pointer",
+            outline: "none",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {faq.question}
+          <span style={{ transform: openIndex === index ? "rotate(45deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}>+</span>
+        </button>
+        <div
+          style={{
+            maxHeight: openIndex === index ? "500px" : "0",
+            transition: "max-height 0.4s ease, padding 0.4s ease",
+            padding: openIndex === index ? "10px 20px 15px" : "0 20px",
+            background: "#fafafa",
+          }}
+        >
+          <p style={{ margin: 0, fontSize: "13px", color: "#555" }}>{faq.answer}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
 
-                  {/* Search for help card */}
-                  <div
-                    style={{
-                      background: 'white',
-                      borderRadius: '10px',
-                      padding: '10px 15px',
-                      boxShadow: '0 2px 20px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    {/* Help options */}
-                    {helpOptions.map((opt, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          padding: '14px 15px ',
-                          borderBottom: idx < helpOptions.length - 1 ? '1px solid #eee' : 'none',
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => handleHelpClick(opt)}
-                      >
-                        <span style={{ color: '#000', fontSize: '14px' }}>{opt}</span>
-                        <FaChevronRight color="#ccc" size={14} />
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
 
 
 
@@ -389,7 +415,7 @@ useEffect(() => {
             >
               {[
                 { icon: FaEnvelope, label: 'Chat', screenName: 'chat' },
-                { icon: FaHome, label: 'Home', screenName: 'intro' }
+                { icon: HelpCircle, label: 'FAQ', screenName: 'intro' }
               ].map((item, idx) => {
                 const Icon = item.icon;
                 const isActive = screen === item.screenName;
