@@ -92,18 +92,12 @@ const Chatbot = () => {
   ];
 
 
-  useEffect(() => {
-    if (isOpen) {
-      const visited = sessionStorage.getItem("visited_chatbot");
+useEffect(() => {
+  if (isOpen) {
+    setScreen("chat");
+  }
+}, [isOpen]);
 
-      if (!visited) {
-        setScreen("intro");
-        sessionStorage.setItem("visited_chatbot", "true");
-      } else {
-        setScreen("chat");
-      }
-    }
-  }, [isOpen]);
 
 
   useEffect(() => {
